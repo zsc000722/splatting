@@ -187,7 +187,7 @@ void splatting_forward_cuda_impl(
     torch::Tensor output) {
   const size_t num_steps = frame.numel();
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
-      frame.type(), "splatting_forward_cuda", [&] {
+      frame.scalar_type(), "splatting_forward_cuda", [&] {
         splatting_forward_cuda_kernel<
             scalar_t><<<GET_BLOCKS(num_steps), CUDA_NUM_THREADS>>>(
             frame.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
@@ -204,7 +204,7 @@ void splatting_backward_cuda_impl(
     torch::Tensor grad_flow) {
   const size_t num_steps = frame.numel();
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
-      frame.type(), "splatting_backward_cuda", [&] {
+      frame.scalar_type(), "splatting_backward_cuda", [&] {
         splatting_backward_cuda_kernel<
             scalar_t><<<GET_BLOCKS(num_steps), CUDA_NUM_THREADS>>>(
             frame.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
